@@ -14,7 +14,7 @@ public class Question {
 	}
 	
 	public boolean verifierReponse(String reponse) {
-		return this.bonneReponse.equals(reponse);
+		return this.bonneReponse != null && reponse != null && this.bonneReponse.equals(reponse);
 	}
 	
 	public void addProposition(String proposition) {
@@ -45,4 +45,14 @@ public class Question {
 	public void setBonneReponse(String bonneReponse) {
 		this.bonneReponse = bonneReponse;
 	}
+
+	@Override
+	public String toString() {
+		String questionText = this.intitule + "\n";
+		for (int i = 0; i < this.propositions.size(); i++) {
+			questionText += "\t- " + propositions.get(i) + "\n";
+		}
+		return questionText;
+	}
+	
 }
