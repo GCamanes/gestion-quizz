@@ -1,12 +1,15 @@
 package fr.diginamic.console;
 
+
 import java.util.Scanner;
 
 import fr.diginamic.service.*;
 import fr.diginamic.exception.AjouterQuestionException;
+import fr.diginamic.exception.QuizzException;
 import fr.diginamic.exception.SupprimerQuestionException;
 import fr.diginamic.model.Question;
 import fr.diginamic.model.QuestionMemDAO;
+import fr.diginamic.model.TypeQuestion;
 
 public class QuizzAdminConsoleApp {
 	
@@ -31,7 +34,7 @@ public class QuizzAdminConsoleApp {
 	
 	public void run() {
 		
-		Question q1 = new Question("Quelle est la capitale de la france ?", 4);
+		Question q1 = new Question("Quelle est la capitale de la france ?", 4, TypeQuestion.SIMPLE);
 		q1.addProposition("Paris");
 		q1.addProposition("Rome");
 		q1.addProposition("Madrid");
@@ -40,7 +43,7 @@ public class QuizzAdminConsoleApp {
 		
 		this.questionMemDAO.save(q1);
 		
-		Question q2 = new Question("Qui a un problème avec les branches dans git ?", 3);
+		Question q2 = new Question("Qui a un problème avec les branches dans git ?", 3, TypeQuestion.BONUS);
 		q2.addProposition("Clément");
 		q2.addProposition("Josselin");
 		q2.addProposition("Kevyn");
@@ -57,7 +60,7 @@ public class QuizzAdminConsoleApp {
 		do {
 			try {
 				choice = Integer.parseInt(questionUser.nextLine());
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				System.out.println("\n /!\\ Il faut rentrer un nombre (entre 1 et 4, ou 99) pour interagir avec le menu\n");
 			}
 			
@@ -81,6 +84,7 @@ public class QuizzAdminConsoleApp {
 					System.out.println(this.listOptions);
 					break;
 				default:
+					System.out.println(this.listOptions);
 					break;
 			}
 		} while (choice != 99);
@@ -112,6 +116,10 @@ public class QuizzAdminConsoleApp {
 	
 	public void runQuizz() {
 		ExecuterQuizzService eqService = new ExecuterQuizzService();
-		eqService.executeUC(this.questionUser, this.questionMemDAO);
+		try {
+			eqService.executeUC(this.questionUser, this.questionMemDAO);
+		} catch (QuizzException e) {
+			System.out.println("\n"+e.getMessage());
+		}
 	}
 }

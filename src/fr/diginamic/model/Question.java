@@ -6,11 +6,13 @@ public class Question {
 	private String intitule;
 	private ArrayList<String> propositions;
 	private String bonneReponse;
+	private TypeQuestion type;
 		
-	public Question(String intitule, int nbReponses) {
+	public Question(String intitule, int nbReponses, TypeQuestion type) {
 		super();
 		this.intitule = intitule;
 		this.propositions = new ArrayList<String>(nbReponses);
+		this.type = type;
 	}
 	
 	public boolean verifierReponse(String reponse) {
@@ -44,6 +46,14 @@ public class Question {
 
 	public void setBonneReponse(String bonneReponse) {
 		this.bonneReponse = bonneReponse;
+	}
+	
+	public TypeQuestion getType() {
+		return type;
+	}
+
+	public void setType(TypeQuestion type) {
+		this.type = type;
 	}
 
 	@Override
