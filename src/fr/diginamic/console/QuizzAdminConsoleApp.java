@@ -3,7 +3,8 @@ package fr.diginamic.console;
 import java.util.Scanner;
 
 import fr.diginamic.service.*;
-
+import fr.diginamic.exception.AjouterQuestionException;
+import fr.diginamic.exception.SupprimerQuestionException;
 import fr.diginamic.model.Question;
 import fr.diginamic.model.QuestionMemDAO;
 
@@ -54,11 +55,10 @@ public class QuizzAdminConsoleApp {
 				
 		int choice = 0;
 		do {
-			String tempChoice = questionUser.nextLine();
-			if (tempChoice.equals("")) {
-				choice = 0;
-			} else {
-				choice = Integer.parseInt(tempChoice);
+			try {
+				choice = Integer.parseInt(questionUser.nextLine());
+			} catch (Exception e) {
+				System.out.println("\n /!\\ Il faut rentrer un nombre (entre 1 et 4, ou 99) pour interagir avec le menu\n");
 			}
 			
 			switch (choice) {
@@ -81,7 +81,6 @@ public class QuizzAdminConsoleApp {
 					System.out.println(this.listOptions);
 					break;
 				default:
-					System.out.println("*** Attention : choix possibles 1, 2, 3, 4 et 99");
 					break;
 			}
 		} while (choice != 99);
@@ -95,12 +94,20 @@ public class QuizzAdminConsoleApp {
 	
 	public void addQuestion() {
 		AjouterQuestionService aqService = new AjouterQuestionService();
-		aqService.executeUC(this.questionUser, this.questionMemDAO);
+		try {
+			aqService.executeUC(this.questionUser, this.questionMemDAO);
+		} catch (AjouterQuestionException e) {
+			System.out.println("\n"+e.getMessage());
+		}
 	}
 	
 	public void deleteQuestion() {
 		SupprimerQuestionService sqService = new SupprimerQuestionService();
-		sqService.executeUC(this.questionUser, this.questionMemDAO);
+		try {
+			sqService.executeUC(this.questionUser, this.questionMemDAO);
+		} catch (SupprimerQuestionException e) {
+			System.out.println("\n"+e.getMessage());
+		}
 	}
 	
 	public void runQuizz() {
